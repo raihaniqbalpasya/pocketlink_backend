@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "env": {
+    "DATABASE_URL": "postgres://ikzqewwn:F5u_H_A5pstE8e8uqkp3GhJwv0s2w0Ga@rosie.db.elephantsql.com:5432/ikzqewwn"
+  },
   "builds": [
     {
       "src": "/server.js",
