@@ -10,7 +10,7 @@ module.exports = {
         return res.status(401).json({ message: "Token not found." });
       }
 
-      jwt.verify(token, process.env.ACCESS_TOKEN, (err, user) => {
+      jwt.verify(token, "secret", (err, user) => {
         if (err) {
           return res.status(403).json({ message: "Token is not valid." });
         }
