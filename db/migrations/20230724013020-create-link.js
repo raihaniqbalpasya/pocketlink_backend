@@ -21,10 +21,12 @@ module.exports = {
       rawLink: {
         allowNull: false,
         type: Sequelize.STRING,
+        unique: true,
       },
       customLink: {
         allowNull: false,
         type: Sequelize.STRING,
+        unique: true,
       },
       limit: {
         allowNull: false,
