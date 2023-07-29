@@ -82,7 +82,7 @@ module.exports = {
       } else {
         res.status(404).json({
           status: false,
-          message: "Data empty, Please input some data!",
+          message: "Data not found",
         });
       }
     } catch (err) {
