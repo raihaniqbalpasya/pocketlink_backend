@@ -70,6 +70,29 @@ module.exports = {
     }
   },
 
+  async searchByCustomLink(req, res) {
+    try {
+      const data = await linkService.searchByCustomLink(req.query.customLink);
+      if (data.length >= 1) {
+        res.status(200).json({
+          status: true,
+          message: "Successfully get all data",
+          data,
+        });
+      } else {
+        res.status(404).json({
+          status: false,
+          message: "Data empty, Please input some data!",
+        });
+      }
+    } catch (err) {
+      res.status(422).json({
+        status: false,
+        message: err.message,
+      });
+    }
+  },
+
   async create(req, res) {
     try {
       const data = await linkService.create(req.user.id, {

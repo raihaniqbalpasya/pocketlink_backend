@@ -9,6 +9,18 @@ module.exports = {
     }
   },
 
+  searchByCustomLink(customLink) {
+    try {
+      return Link.findAll({
+        where: {
+          customLink: customLink,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  },
+
   getAllByUserId(userId) {
     try {
       return Link.findAll({
