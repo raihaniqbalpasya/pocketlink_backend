@@ -71,6 +71,31 @@ module.exports = {
     }
   },
 
+  async searchByProfileLink(req, res) {
+    try {
+      const data = await profileLinkService.searchByProfileLink(
+        req.query.profileLink
+      );
+      if (data.length >= 1) {
+        res.status(200).json({
+          status: true,
+          message: "Successfully get all data",
+          data,
+        });
+      } else {
+        res.status(404).json({
+          status: false,
+          message: "Data not found",
+        });
+      }
+    } catch (err) {
+      res.status(422).json({
+        status: false,
+        message: err.message,
+      });
+    }
+  },
+
   async create(req, res) {
     try {
       const getData = await profileLinkService.getMyProfile(req.user.id);

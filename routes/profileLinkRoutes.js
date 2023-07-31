@@ -10,6 +10,11 @@ router.get(
   userMiddleware.authorize,
   profileLinkController.getMyProfile
 );
+router.get(
+  "/search/by",
+  userMiddleware.authorize,
+  profileLinkController.searchByProfileLink
+);
 router.post("/", userMiddleware.authorize, profileLinkController.create);
 router.put(
   "/",

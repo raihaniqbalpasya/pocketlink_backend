@@ -28,8 +28,16 @@ module.exports = {
       profilePic: {
         type: Sequelize.STRING,
       },
+      profileLink: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        unique: true,
+      },
       projectLink: {
         allowNull: false,
+        type: Sequelize.ARRAY(Sequelize.STRING),
+      },
+      imageLink: {
         type: Sequelize.ARRAY(Sequelize.STRING),
       },
       design: {
