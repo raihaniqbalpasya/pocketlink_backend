@@ -1,3 +1,7 @@
+const { promisify } = require("util");
+const cloudinary = require("../../config/cloudinary");
+const cloudinaryUpload = promisify(cloudinary.uploader.upload);
+const cloudinaryDelete = promisify(cloudinary.uploader.destroy);
 const profileLinkService = require("../services/profileLinkServices");
 
 module.exports = {
@@ -122,6 +126,7 @@ module.exports = {
 
   async updateMyProfile(req, res) {
     try {
+      const requestFile = req.file;
       const getData = await profileLinkService.getMyProfile(req.user.id);
       if (getData === null || getData.userId !== req.user.id) {
         res.status(404).json({
@@ -129,13 +134,85 @@ module.exports = {
           message: "Data not found",
         });
       } else {
-        await profileLinkService.update(req.user.id, req.body);
-        const data = await profileLinkService.getMyProfile(req.user.id);
-        res.status(200).json({
-          status: true,
-          message: "Successfully update data",
-          data,
-        });
+        const urlImage = getData.profilePic;
+        if (urlImage === null || urlImage === "") {
+          if (
+            requestFile === null ||
+            requestFile === undefined ||
+            requestFile === ""
+          ) {
+            await profileLinkService.update(req.user.id, {
+              ...req.body,
+              profilePic: null,
+            });
+            const data = await profileLinkService.getMyProfile(req.user.id);
+            res.status(200).json({
+              status: true,
+              message: "Successfully update data",
+              data,
+            });
+          } else {
+            const fileBase64 = requestFile.buffer.toString("base64");
+            const file = `data:${requestFile.mimetype};base64,${fileBase64}`;
+            const result = await cloudinaryUpload(file, {
+              folder: "linkProfilePic",
+              resource_type: "image",
+              allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
+            });
+            const url = result.secure_url;
+            await profileLinkService.update(req.user.id, {
+              ...req.body,
+              profilePic: url,
+            });
+            const data = await profileLinkService.getMyProfile(req.user.id);
+            res.status(200).json({
+              status: true,
+              message: "Successfully update data",
+              data,
+            });
+          }
+        } else {
+          // mengambil url gambar dari cloudinary dan menghapusnya
+          const getPublicId =
+            "linkProfilePic/" + urlImage.split("/").pop().split(".")[0] + "";
+          await cloudinaryDelete(getPublicId);
+          if (requestFile === null || requestFile === undefined) {
+            await profileLinkService.update(req.user.id, {
+              ...req.body,
+              profilePic: null,
+            });
+            const data = await profileLinkService.getMyProfile(req.user.id);
+            res.status(200).json({
+              status: true,
+              message: "Successfully update data",
+              data,
+            });
+          } else {
+            // mengambil url gambar dari cloudinary dan menghapusnya
+            const getPublicId =
+              "linkProfilePic/" + urlImage.split("/").pop().split(".")[0] + "";
+            await cloudinaryDelete(getPublicId);
+
+            const fileBase64 = requestFile.buffer.toString("base64");
+            const file = `data:${requestFile.mimetype};base64,${fileBase64}`;
+            const result = await cloudinaryUpload(file, {
+              folder: "linkProfilePic",
+              resource_type: "image",
+              allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
+            });
+            const url = result.secure_url;
+            await profileLinkService.update(req.user.id, {
+              ...req.body,
+              profilePic: url,
+            });
+            const data = await profileLinkService.getMyProfile(req.user.id);
+            res.status(200).json({
+              status: true,
+              message: "Successfully update data",
+              data,
+            });
+          }
+        }
       }
     } catch (err) {
       res.status(422).json({
