@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       userId: DataTypes.INTEGER,
       rawLink: DataTypes.STRING,
       customLink: DataTypes.STRING,
-      limit: DataTypes.INTEGER,
     },
     {
       sequelize,

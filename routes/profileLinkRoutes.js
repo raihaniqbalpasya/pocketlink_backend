@@ -6,7 +6,7 @@ const userMiddleware = require("../middlewares/userMiddleware");
 
 router.get("/", userMiddleware.authorize, profileLinkController.getAll);
 router.get("/:id", userMiddleware.authorize, profileLinkController.getById);
-router.get("/search/by", profileLinkController.searchByProfileLink);
+// router.get("/search/by", profileLinkController.searchByProfileLink); // Sementara gak dipakai
 router.get(
   "/my/profile",
   userMiddleware.authorize,

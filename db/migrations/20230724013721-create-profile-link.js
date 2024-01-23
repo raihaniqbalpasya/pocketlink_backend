@@ -18,49 +18,30 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      displayName: {
+      title: {
         allowNull: false,
+        type: Sequelize.STRING,
+      },
+      profileImage: {
         type: Sequelize.STRING,
       },
       description: {
         type: Sequelize.STRING,
       },
-      profilePic: {
+      backgroundImage: {
         type: Sequelize.STRING,
       },
-      profileLink: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true,
-      },
-      projectLink: {
-        allowNull: false,
-        type: Sequelize.ARRAY(Sequelize.STRING),
-      },
-      imageLink: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
-      },
-      design: {
+      designPattern: {
         allowNull: false,
         type: Sequelize.JSON,
       },
-      facebook: {
-        type: Sequelize.STRING,
+      listOfLinks: {
+        allowNull: false,
+        type: Sequelize.JSON,
       },
-      instagram: {
-        type: Sequelize.STRING,
-      },
-      youtube: {
-        type: Sequelize.STRING,
-      },
-      tiktok: {
-        type: Sequelize.STRING,
-      },
-      twitter: {
-        type: Sequelize.STRING,
-      },
-      linkedin: {
-        type: Sequelize.STRING,
+      socialMedia: {
+        allowNull: false,
+        type: Sequelize.JSON,
       },
       createdAt: {
         allowNull: false,

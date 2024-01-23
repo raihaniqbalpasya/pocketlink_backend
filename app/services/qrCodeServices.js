@@ -1,9 +1,9 @@
-const { Custom } = require("../models");
+const { QRCode } = require("../models");
 
 module.exports = {
   getAll() {
     try {
-      return Custom.findAll();
+      return QRCode.findAll();
     } catch (error) {
       throw error;
     }
@@ -11,7 +11,7 @@ module.exports = {
 
   getById(id) {
     try {
-      return Custom.findOne({
+      return QRCode.findOne({
         where: {
           id: id,
         },
@@ -21,19 +21,23 @@ module.exports = {
     }
   },
 
-  create(createArgs) {
+  create(userId, createArgs) {
     try {
-      return Custom.create(createArgs);
+      return QRCode.create({
+        ...createArgs,
+        userId: userId,
+      });
     } catch (error) {
       throw error;
     }
   },
 
-  update(id, updateArgs) {
+  update(id, userId, updateArgs) {
     try {
-      return Custom.update(updateArgs, {
+      return QRCode.update(updateArgs, {
         where: {
           id: id,
+          userId: userId,
         },
       });
     } catch (error) {
@@ -43,7 +47,7 @@ module.exports = {
 
   delete(id) {
     try {
-      return Custom.destroy({
+      return QRCode.destroy({
         where: {
           id: id,
         },

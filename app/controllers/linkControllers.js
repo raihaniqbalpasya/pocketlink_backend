@@ -98,7 +98,6 @@ module.exports = {
       const data = await linkService.create(req.user.id, {
         rawLink: req.body.rawLink,
         customLink: req.body.customLink,
-        limit: 1000,
       });
       res.status(201).json({
         status: true,
@@ -124,7 +123,6 @@ module.exports = {
       } else {
         await linkService.update(req.params.id, req.user.id, {
           ...req.body,
-          limit: getData.limit,
         });
         const data = await linkService.getById(req.params.id);
         res.status(200).json({

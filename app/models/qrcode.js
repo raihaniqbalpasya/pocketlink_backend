@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Custom extends Model {
+  class QRCode extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,16 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Custom.init({
-    color: DataTypes.STRING,
-    shape: DataTypes.STRING,
-    theme: DataTypes.STRING,
-    iconSM: DataTypes.STRING,
-    font: DataTypes.STRING,
-    border: DataTypes.STRING
+  QRCode.init({
+    userId: DataTypes.INTEGER,
+    qrValue: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Custom',
+    modelName: 'QRCode',
   });
-  return Custom;
+  return QRCode;
 };

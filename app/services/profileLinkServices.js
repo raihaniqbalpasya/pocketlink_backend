@@ -33,17 +33,18 @@ module.exports = {
     }
   },
 
-  searchByProfileLink(profileLink) {
-    try {
-      return ProfileLink.findAll({
-        where: {
-          profileLink: profileLink,
-        },
-      });
-    } catch (error) {
-      throw error;
-    }
-  },
+  // ------ Sementara gak dipakai ------
+  // searchByProfileLink(profileLink) {
+  //   try {
+  //     return ProfileLink.findAll({
+  //       where: {
+  //         profileLink: profileLink,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // },
 
   create(userId, createArgs) {
     try {

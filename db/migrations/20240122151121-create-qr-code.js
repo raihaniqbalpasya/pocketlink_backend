@@ -1,13 +1,13 @@
-"use strict";
+'use strict';
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Links", {
+    await queryInterface.createTable('QRCodes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       userId: {
         allowNull: false,
@@ -18,26 +18,20 @@ module.exports = {
         },
         onDelete: "CASCADE",
       },
-      rawLink: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
-      customLink: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true,
+      qrValue: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Links");
-  },
+    await queryInterface.dropTable('QRCodes');
+  }
 };

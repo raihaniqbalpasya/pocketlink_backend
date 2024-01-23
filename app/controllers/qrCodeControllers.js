@@ -1,10 +1,9 @@
-const customService = require("../services/customServices");
+const qrCodeService = require("../services//qrCodeServices");
 
 module.exports = {
   async getAll(req, res) {
     try {
-      const data = await customService.getAll(); // Seluruh data tanpa paginasi
-      // Respon yang akan ditampilkan jika datanya ada
+      const data = await qrCodeService.getAll();
       if (data.length >= 1) {
         res.status(200).json({
           status: true,
@@ -27,7 +26,7 @@ module.exports = {
 
   async getById(req, res) {
     try {
-      const data = await customService.getById(req.params.id);
+      const data = await qrCodeService.getById(req.params.id);
       if (data !== null) {
         res.status(200).json({
           status: true,
@@ -50,7 +49,9 @@ module.exports = {
 
   async create(req, res) {
     try {
-      const data = await customService.create(req.body);
+      const data = await qrCodeService.create(req.user.id, {
+        qrValue: req.body.qrValue,
+      });
       res.status(201).json({
         status: true,
         message: "Successfully create data",
@@ -66,18 +67,21 @@ module.exports = {
 
   async update(req, res) {
     try {
-      await customService.update(req.params.id, req.body);
-      const data = await customService.getById(req.params.id);
-      if (data !== null) {
-        res.status(200).json({
-          status: true,
-          message: "Successfully update data",
-          data: data,
-        });
-      } else {
+      const getData = await qrCodeService.getById(req.params.id);
+      if (getData === null || getData.userId !== req.user.id) {
         res.status(404).json({
           status: false,
           message: "Data not found",
+        });
+      } else {
+        await qrCodeService.update(req.params.id, req.user.id, {
+          ...req.body,
+        });
+        const data = await qrCodeService.getById(req.params.id);
+        res.status(200).json({
+          status: true,
+          message: "Successfully update data",
+          data,
         });
       }
     } catch (err) {
@@ -90,7 +94,7 @@ module.exports = {
 
   async deleteById(req, res) {
     try {
-      const data = await customService.delete(req.params.id);
+      const data = await qrCodeService.delete(req.params.id);
       if (data === 1) {
         res.status(200).json({
           status: true,
