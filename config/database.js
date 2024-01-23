@@ -16,10 +16,15 @@ module.exports = {
     dialect: "postgres",
   },
   production: {
-    username: "ikzqewwn",
-    password: "F5u_H_A5pstE8e8uqkp3GhJwv0s2w0Ga",
-    database: "ikzqewwn",
-    host: "rosie.db.elephantsql.com",
+    username: "default",
+    password: "av51VYGJlRbN",
+    database: "verceldb",
+    host: "ep-fancy-tree-94136696-pooler.us-east-1.postgres.vercel-storage.com",
     dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
   },
 };

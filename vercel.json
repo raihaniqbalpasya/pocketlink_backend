@@ -1,7 +1,7 @@
 {
   "version": 2,
   "env": {
-    "DATABASE_URL": "postgres://ikzqewwn:F5u_H_A5pstE8e8uqkp3GhJwv0s2w0Ga@rosie.db.elephantsql.com:5432/ikzqewwn"
+    "DATABASE_URL": "postgres://default:av51VYGJlRbN@ep-fancy-tree-94136696.us-east-1.postgres.vercel-storage.com:5432/verceldb?sslmode=require"
   },
   "builds": [
     {
