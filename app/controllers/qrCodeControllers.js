@@ -1,4 +1,4 @@
-const qrCodeService = require("../services//qrCodeServices");
+const qrCodeService = require("../services/qrCodeServices");
 
 module.exports = {
   async getAll(req, res) {

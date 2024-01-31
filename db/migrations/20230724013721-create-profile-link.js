@@ -35,10 +35,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.JSON,
       },
-      listOfLinks: {
-        allowNull: false,
-        type: Sequelize.JSON,
-      },
       socialMedia: {
         allowNull: false,
         type: Sequelize.JSON,

@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const upload = require("../config/multer");
 const profileLinkController = require("../app/controllers/profileLinkControllers");
 const userMiddleware = require("../middlewares/userMiddleware");
+const upload = require("../config/multer");
 
 router.get("/", userMiddleware.authorize, profileLinkController.getAll);
 router.get("/:id", userMiddleware.authorize, profileLinkController.getById);
@@ -12,17 +12,28 @@ router.get(
   userMiddleware.authorize,
   profileLinkController.getMyProfile
 );
-router.post("/", userMiddleware.authorize, profileLinkController.create);
+router.post(
+  "/",
+  userMiddleware.authorize,
+  upload.fields([
+    { name: "profileImage", maxCount: 1 },
+    { name: "backgroundImage", maxCount: 1 },
+  ]),
+  profileLinkController.create
+);
 router.put(
   "/",
   userMiddleware.authorize,
-  upload.single("profilePic"),
+  upload.fields([
+    { name: "profileImage", maxCount: 1 },
+    { name: "backgroundImage", maxCount: 1 },
+  ]),
   profileLinkController.updateMyProfile
 );
 router.delete(
   "/:id",
   userMiddleware.authorize,
-  profileLinkController.deleteById
+  profileLinkController.deleteMyProfile
 );
 
 module.exports = router;
