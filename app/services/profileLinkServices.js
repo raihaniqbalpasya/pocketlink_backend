@@ -69,11 +69,11 @@ module.exports = {
     }
   },
 
-  delete(id) {
+  delete(userId) {
     try {
       return ProfileLink.destroy({
         where: {
-          id: id,
+          userId: userId,
         },
       });
     } catch (error) {

@@ -1,8 +1,9 @@
 const { promisify } = require("util");
 const cloudinary = require("../../config/cloudinary");
 const cloudinaryUpload = promisify(cloudinary.uploader.upload);
-const cloudinaryDelete = promisify(cloudinary.uploader.destroy);
+// const cloudinaryDelete = promisify(cloudinary.uploader.destroy);
 const profileLinkService = require("../services/profileLinkServices");
+const storedImgService = require("../services/storedImgServices");
 
 module.exports = {
   async getAll(req, res) {
@@ -123,6 +124,10 @@ module.exports = {
           allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
         });
         const urlProfileImg = profileImg.secure_url;
+        // create API stored image
+        await storedImgService.create(req.user.id, {
+          linkImg: urlProfileImg,
+        });
         // upload gambar background link ke cloudinary
         const fileBase64BI = reqBgImg.buffer.toString("base64");
         const fileBI = `data:${reqBgImg.mimetype};base64,${fileBase64BI}`;
@@ -132,6 +137,10 @@ module.exports = {
           allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
         });
         const urlBgImg = BgImg.secure_url;
+        // create API stored image
+        await storedImgService.create(req.user.id, {
+          linkImg: urlBgImg,
+        });
         const data = await profileLinkService.create(req.user.id, {
           ...req.body,
           profileImage: urlProfileImg,
@@ -155,6 +164,10 @@ module.exports = {
           allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
         });
         const urlProfileImg = profileImg.secure_url;
+        // create API stored image
+        await storedImgService.create(req.user.id, {
+          linkImg: urlProfileImg,
+        });
         const data = await profileLinkService.create(req.user.id, {
           ...req.body,
           profileImage: urlProfileImg,
@@ -180,6 +193,10 @@ module.exports = {
           allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
         });
         const urlBgImg = BgImg.secure_url;
+        // create API stored image
+        await storedImgService.create(req.user.id, {
+          linkImg: urlBgImg,
+        });
         const data = await profileLinkService.create(req.user.id, {
           ...req.body,
           profileImage: null,
@@ -236,6 +253,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlProfileImg = profileImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlProfileImg,
+            });
             // upload gambar background link ke cloudinary
             const fileBase64BI = reqBgImg.buffer.toString("base64");
             const fileBI = `data:${reqBgImg.mimetype};base64,${fileBase64BI}`;
@@ -245,6 +266,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlBgImg = BgImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlBgImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -270,6 +295,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlProfileImg = profileImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlProfileImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -297,6 +326,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlBgImg = BgImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlBgImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -325,12 +358,6 @@ module.exports = {
           }
         } else if (dataPrfImg && dataBgImg == null) {
           if (reqProfileImg && reqBgImg) {
-            // mengambil url profile image dari cloudinary dan menghapusnya
-            const getPublicIdPf =
-              "linkProfilePic/" +
-              dataPrfImg.split("/").pop().split(".")[0] +
-              "";
-            await cloudinaryDelete(getPublicIdPf);
             // upload gambar profile link ke cloudinary
             const fileBase64PI = reqProfileImg.buffer.toString("base64");
             const filePI = `data:${reqProfileImg.mimetype};base64,${fileBase64PI}`;
@@ -340,6 +367,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlProfileImg = profileImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlProfileImg,
+            });
             // upload gambar background link ke cloudinary
             const fileBase64BI = reqBgImg.buffer.toString("base64");
             const fileBI = `data:${reqBgImg.mimetype};base64,${fileBase64BI}`;
@@ -349,6 +380,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlBgImg = BgImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlBgImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -365,12 +400,6 @@ module.exports = {
             reqProfileImg &&
             (reqBgImg == null || reqBgImg == undefined || reqBgImg == "")
           ) {
-            // mengambil url profile image dari cloudinary dan menghapusnya
-            const getPublicIdPf =
-              "linkProfilePic/" +
-              dataPrfImg.split("/").pop().split(".")[0] +
-              "";
-            await cloudinaryDelete(getPublicIdPf);
             // upload gambar profile link ke cloudinary
             const fileBase64PI = reqProfileImg.buffer.toString("base64");
             const filePI = `data:${reqProfileImg.mimetype};base64,${fileBase64PI}`;
@@ -380,6 +409,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlProfileImg = profileImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlProfileImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -407,6 +440,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlBgImg = BgImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlBgImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -444,10 +481,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlProfileImg = profileImg.secure_url;
-            // mengambil url background image dari cloudinary dan menghapusnya
-            const getPublicIdBg =
-              "linkBgImg/" + dataBgImg.split("/").pop().split(".")[0] + "";
-            await cloudinaryDelete(getPublicIdBg);
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlProfileImg,
+            });
             // upload gambar background link ke cloudinary
             const fileBase64BI = reqBgImg.buffer.toString("base64");
             const fileBI = `data:${reqBgImg.mimetype};base64,${fileBase64BI}`;
@@ -457,6 +494,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlBgImg = BgImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlBgImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -482,6 +523,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlProfileImg = profileImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlProfileImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -500,10 +545,6 @@ module.exports = {
               reqProfileImg == undefined ||
               reqProfileImg == "")
           ) {
-            // mengambil url background image dari cloudinary dan menghapusnya
-            const getPublicIdBg =
-              "linkBgImg/" + dataBgImg.split("/").pop().split(".")[0] + "";
-            await cloudinaryDelete(getPublicIdBg);
             // upload gambar background link ke cloudinary
             const fileBase64BI = reqBgImg.buffer.toString("base64");
             const fileBI = `data:${reqBgImg.mimetype};base64,${fileBase64BI}`;
@@ -513,6 +554,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlBgImg = BgImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlBgImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -541,12 +586,6 @@ module.exports = {
           }
         } else {
           if (reqProfileImg && reqBgImg) {
-            // mengambil url profile image dari cloudinary dan menghapusnya
-            const getPublicIdPf =
-              "linkProfilePic/" +
-              dataPrfImg.split("/").pop().split(".")[0] +
-              "";
-            await cloudinaryDelete(getPublicIdPf);
             // upload gambar profile link ke cloudinary
             const fileBase64PI = reqProfileImg.buffer.toString("base64");
             const filePI = `data:${reqProfileImg.mimetype};base64,${fileBase64PI}`;
@@ -556,10 +595,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlProfileImg = profileImg.secure_url;
-            // mengambil url background image dari cloudinary dan menghapusnya
-            const getPublicIdBg =
-              "linkBgImg/" + dataBgImg.split("/").pop().split(".")[0] + "";
-            await cloudinaryDelete(getPublicIdBg);
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlProfileImg,
+            });
             // upload gambar background link ke cloudinary
             const fileBase64BI = reqBgImg.buffer.toString("base64");
             const fileBI = `data:${reqBgImg.mimetype};base64,${fileBase64BI}`;
@@ -569,6 +608,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlBgImg = BgImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlBgImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -585,12 +628,6 @@ module.exports = {
             reqProfileImg &&
             (reqBgImg == null || reqBgImg == undefined || reqBgImg == "")
           ) {
-            // mengambil url profile image dari cloudinary dan menghapusnya
-            const getPublicIdPf =
-              "linkProfilePic/" +
-              dataPrfImg.split("/").pop().split(".")[0] +
-              "";
-            await cloudinaryDelete(getPublicIdPf);
             // upload gambar profile link ke cloudinary
             const fileBase64PI = reqProfileImg.buffer.toString("base64");
             const filePI = `data:${reqProfileImg.mimetype};base64,${fileBase64PI}`;
@@ -600,6 +637,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlProfileImg = profileImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlProfileImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -618,10 +659,6 @@ module.exports = {
               reqProfileImg == undefined ||
               reqProfileImg == "")
           ) {
-            // mengambil url background image dari cloudinary dan menghapusnya
-            const getPublicIdBg =
-              "linkBgImg/" + dataBgImg.split("/").pop().split(".")[0] + "";
-            await cloudinaryDelete(getPublicIdBg);
             // upload gambar background link ke cloudinary
             const fileBase64BI = reqBgImg.buffer.toString("base64");
             const fileBI = `data:${reqBgImg.mimetype};base64,${fileBase64BI}`;
@@ -631,6 +668,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const urlBgImg = BgImg.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: urlBgImg,
+            });
             // update data API
             await profileLinkService.update(req.user.id, {
               ...req.body,
@@ -671,53 +712,12 @@ module.exports = {
     try {
       const getData = await profileLinkService.getMyProfile(req.user.id);
       if (getData) {
-        const dataPrfImg = getData.profileImage;
-        const dataBgImg = getData.backgroundImage;
-        if (dataPrfImg == null && dataBgImg == null) {
-          // hapus data API
-          await profileLinkService.delete(req.params.id);
-          res.status(200).json({
-            status: true,
-            message: "Successfully delete data",
-          });
-        } else if (dataPrfImg && dataBgImg == null) {
-          // mengambil url profile image dari cloudinary dan menghapusnya
-          const getPublicId =
-            "linkProfilePic/" + dataPrfImg.split("/").pop().split(".")[0] + "";
-          await cloudinaryDelete(getPublicId);
-          // hapus data API
-          await profileLinkService.delete(req.params.id);
-          res.status(200).json({
-            status: true,
-            message: "Successfully delete data",
-          });
-        } else if (dataPrfImg == null && dataBgImg) {
-          // mengambil url background image dari cloudinary dan menghapusnya
-          const getPublicId =
-            "linkBgImg/" + dataBgImg.split("/").pop().split(".")[0] + "";
-          await cloudinaryDelete(getPublicId);
-          // hapus data API
-          await profileLinkService.delete(req.params.id);
-          res.status(200).json({
-            status: true,
-            message: "Successfully delete data",
-          });
-        } else {
-          // mengambil url profile image dari cloudinary dan menghapusnya
-          const getPublicIdPf =
-            "linkProfilePic/" + dataPrfImg.split("/").pop().split(".")[0] + "";
-          await cloudinaryDelete(getPublicIdPf);
-          // mengambil url background image dari cloudinary dan menghapusnya
-          const getPublicIdBg =
-            "linkBgImg/" + dataBgImg.split("/").pop().split(".")[0] + "";
-          await cloudinaryDelete(getPublicIdBg);
-          // hapus data API
-          await profileLinkService.delete(req.params.id);
-          res.status(200).json({
-            status: true,
-            message: "Successfully delete data",
-          });
-        }
+        // hapus data API
+        await profileLinkService.delete(req.user.id);
+        res.status(200).json({
+          status: true,
+          message: "Successfully delete data",
+        });
       } else {
         res.status(404).json({
           status: false,

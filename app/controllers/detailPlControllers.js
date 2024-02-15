@@ -1,8 +1,9 @@
 const { promisify } = require("util");
 const cloudinary = require("../../config/cloudinary");
 const cloudinaryUpload = promisify(cloudinary.uploader.upload);
-const cloudinaryDelete = promisify(cloudinary.uploader.destroy);
+// const cloudinaryDelete = promisify(cloudinary.uploader.destroy);
 const detailPlService = require("../services/detailPlServices");
+const storedImgService = require("../services/storedImgServices");
 
 module.exports = {
   async getAll(req, res) {
@@ -77,6 +78,10 @@ module.exports = {
           allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
         });
         const url = result.secure_url;
+        // create API stored image
+        await storedImgService.create(req.user.id, {
+          linkImg: url,
+        });
         const data = await detailPlService.create({
           ...req.body,
           image: url,
@@ -128,6 +133,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const url = result.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: url,
+            });
             // update data API
             await detailPlService.update(req.params.id, {
               ...req.body,
@@ -154,10 +163,6 @@ module.exports = {
               data,
             });
           } else {
-            // mengambil url gambar dari cloudinary dan menghapusnya
-            const getPublicId =
-              "linkImage/" + urlImage.split("/").pop().split(".")[0] + "";
-            await cloudinaryDelete(getPublicId);
             // upload link image ke cloudinary
             const fileBase64 = reqFile.buffer.toString("base64");
             const file = `data:${reqFile.mimetype};base64,${fileBase64}`;
@@ -167,6 +172,10 @@ module.exports = {
               allowed_formats: ["jpg", "png", "jpeg", "gif", "svg", "webp"],
             });
             const url = result.secure_url;
+            // create API stored image
+            await storedImgService.create(req.user.id, {
+              linkImg: url,
+            });
             // update data API
             await detailPlService.update(req.params.id, {
               ...req.body,
@@ -193,26 +202,12 @@ module.exports = {
     try {
       const data = await detailPlService.getById(req.params.id);
       if (data) {
-        const urlImage = data.image;
-        if (urlImage) {
-          // mengambil url gambar dari cloudinary dan menghapusnya
-          const getPublicId =
-            "linkImage/" + urlImage.split("/").pop().split(".")[0] + "";
-          await cloudinaryDelete(getPublicId);
-          // menghapus seluruh data API-nya
-          await detailPlService.delete(req.params.id);
-          res.status(200).json({
-            status: true,
-            message: "Successfully delete data",
-          });
-        } else {
-          // menghapus seluruh data API-nya
-          await detailPlService.delete(req.params.id);
-          res.status(200).json({
-            status: true,
-            message: "Successfully delete data",
-          });
-        }
+        // menghapus seluruh data API-nya
+        await detailPlService.delete(req.params.id);
+        res.status(200).json({
+          status: true,
+          message: "Successfully delete data",
+        });
       } else {
         res.status(404).json({
           status: false,

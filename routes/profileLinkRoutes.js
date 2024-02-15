@@ -31,7 +31,7 @@ router.put(
   profileLinkController.updateMyProfile
 );
 router.delete(
-  "/:id",
+  "/",
   userMiddleware.authorize,
   profileLinkController.deleteMyProfile
 );
